@@ -10,11 +10,7 @@ namespace DragonCombatV2
     {
         static void Main(string[] args)
         {
-            Player player = new Player("Jaya", 100);
-            Enemy enemy = new Enemy("Dragon", 200);
-
-            
-            Game game = new Game(player, enemy);
+            Game game = new Game();
             game.Greet();
             game.PlayGame();
         }

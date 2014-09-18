@@ -18,14 +18,12 @@ namespace DragonCombatV2
         //properties
         public string name { get; set; }
         public int health { get; set; }
+        public const int maxHP = 100;
         public bool IsAlive
         {
             get
             {
-                if (health > 0)
-                    return true;
-                else
-                    return false;
+                return (health > 0);
             }
         }
 
@@ -34,14 +32,11 @@ namespace DragonCombatV2
         {
         }
 
+        //
         abstract public int DoAttach();
-        //{
-        //   // return 0;
-        //}
-
+        
         abstract public void TakeDamage(int damage);
-        //{
-        //}
+        
     }
 
     //Inheriting Player
@@ -95,14 +90,22 @@ namespace DragonCombatV2
                     return rng.Next(10, 16);
                                         
                 case AttackType.Heal: //user selected heal
-                    if (health == 100)
+                    if (health >= maxHP) //won't heal if user has his max HP
                     {
                         Console.WriteLine("Sorry, you already have max HP points. Make a new choice");
                         return DoAttach();
                     }
                     else
                     {
-                        return rng.Next(10, 21);
+                        int healthUntilMaxHP = maxHP - health;
+                        int healthHealed = rng.Next(10, 21);
+                        if(healthHealed > healthUntilMaxHP)
+                        {
+                            Console.WriteLine("Sorry, you can't heal past your Max HP\nMake a new choice");
+                            return DoAttach();
+                        }
+                        this.health += healthHealed;
+                            return 0;
                     }
                     
                 default:
@@ -116,11 +119,12 @@ namespace DragonCombatV2
 
         public AttackType ChooseAttach()
         {
-            AttackType userChoice;
+            int userChoice;
             string choice = "";
 
             //this loop is for exception handling. If user accidentaly presses enter, it will ask for choice again
-            while (choice == "")
+            //also if he enters any value other than 1, 2 or 3, it will ask for choice again
+            while ((choice == "") || !("123".Contains(choice)))
             {
                 Console.WriteLine(@"
 Make your choice
@@ -131,14 +135,14 @@ Make your choice
 
                 choice = Console.ReadLine();
             }
-            userChoice = (AttackType)Enum.Parse(typeof(AttackType), choice);
-            return userChoice;
+            userChoice = int.Parse(choice);
+            return (AttackType)userChoice;
         }
 
         //It takes how much damage the enemy done to the player
         public override void TakeDamage(int damage)
         {
-            this.health = this.health - damage;
+            this.health -= damage;
         }
    
     }

@@ -9,7 +9,7 @@ namespace DragonCombatV2
     public class Enemy: GamePlayer
     {
         //As it inherits all the properties of parent class, not declaring the properties
-
+                
         //constructor
         public Enemy()
         {
@@ -29,7 +29,7 @@ namespace DragonCombatV2
             this.health = health;
         }
 
-       //Takes current enemy health and returns enemy health after the attach.
+       //Returns the emount of damage for enemy health after the attach.
         public override int DoAttach()
         {
             Random rng = new Random();
@@ -52,6 +52,6 @@ namespace DragonCombatV2
             this.health = this.health - damage;
         }
    
-
     }
+
 }

@@ -15,7 +15,8 @@ namespace DragonCombatV2
         //Constructor
         public Game()
         {
-            this.user = new Player("Jaya", 100);
+            Console.Write("Enter your name: ");
+            this.user = new Player(Console.ReadLine());
             this.dragon = new Enemy("Dragon", 200);
         }
 
@@ -68,25 +69,22 @@ Welcome to the game: DRAGON HIT!
         //Actual game logic
         public void PlayGame()
         {
-            while (user.IsAlive && dragon.IsAlive) //means both are alive to play
+            while (user.IsAlive) //means both are alive to play
             {
                 DisplayCombatInfo();
-                Console.ReadKey();
+                Console.ReadKey(); //user can view the information
                 this.dragon.TakeDamage(this.user.DoAttach());
-                if (dragon.IsAlive)
+                if (dragon.IsAlive) //if dragon survives user's attack, then only it can attack
                 {
                     DisplayCombatInfo();
                     Console.ReadKey();
                     this.user.TakeDamage(this.dragon.DoAttach());
                 }
+                else
+                    Console.WriteLine("\n" +this.user.name + " you WON!");
             }
 
-            if (this.user.IsAlive)
-            {
-                Console.WriteLine(this.user.name +" you WON!");
-            }
-            else
-                Console.WriteLine(this.user.name + " you lost");
+           Console.WriteLine("\n" +this.user.name + " you lost");
         }
     }
 }

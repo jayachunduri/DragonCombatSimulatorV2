@@ -9,27 +9,27 @@ namespace DragonCombatV2
     class Game
     {
         //declaring properties
-        Player user;
+        public static Player user;
         Enemy dragon;
-
+        
         //Constructor
         public Game()
         {
             Console.Write("Enter your name: ");
-            this.user = new Player(Console.ReadLine());
+            user = new Player(Console.ReadLine());
             this.dragon = new Enemy("Dragon", 200);
         }
 
-        public Game(Player user, Enemy dragon)
+        public Game(Player name, Enemy dragon)
         {
-            this.user = user;
+            user = name;
             this.dragon = dragon;
         }
 
         //Function to greet the user.
         public void Greet()
         {
-            Console.WriteLine("\nWelcome to DRAGON HIT, " +this.user.name);
+            Console.WriteLine("\nWelcome to DRAGON HIT, " +user.name);
             Console.WriteLine("\ntype \"HELP\" for the introduction \n or Press enter to skip the introduction:");
             string temp = Console.ReadLine();
 
@@ -69,22 +69,71 @@ Welcome to the game: DRAGON HIT!
         //Actual game logic
         public void PlayGame()
         {
-            while (user.IsAlive) //means both are alive to play
+            while (user.IsAlive && dragon.IsAlive) //means both are alive to play
             {
                 DisplayCombatInfo();
                 Console.ReadKey(); //user can view the information
-                this.dragon.TakeDamage(this.user.DoAttach());
+                this.dragon.TakeDamage(user.DoAttach());
+                
                 if (dragon.IsAlive) //if dragon survives user's attack, then only it can attack
                 {
                     DisplayCombatInfo();
                     Console.ReadKey();
-                    this.user.TakeDamage(this.dragon.DoAttach());
+                    user.TakeDamage(this.dragon.DoAttach());
                 }
                 else
-                    Console.WriteLine("\n" +this.user.name + " you WON!");
+                    Console.WriteLine("\n" +user.name + " you WON!");
             }
 
-           Console.WriteLine("\n" +this.user.name + " you lost");
+           Console.WriteLine("\n" +user.name + " you lost");
+           AddHighScore(user.Score);
+           DisplayHighScores();
+            
+        }
+
+        public static void AddHighScore(int Score)
+        {
+            //Console.WriteLine("Your Name:");
+            //string playerName = Console.ReadLine();
+
+            //create a gateway to the data base
+            JayaEntities db = new JayaEntities();
+
+            //create a new highscore object
+            HighScore newHighScore = new HighScore();
+
+            newHighScore.DateCreated = DateTime.Now;
+            newHighScore.Game = "Dragon Combat";
+            newHighScore.Name = user.name;
+            newHighScore.Score = Score;
+
+            //add it to the data base
+            db.HighScores.Add(newHighScore);
+
+            //save changes
+            db.SaveChanges();
+        }
+
+        public static void DisplayHighScores()
+        {
+            //clear the console
+            Console.Clear();
+
+            //write the high score text
+            Console.WriteLine("Dragon combat high score");
+            Console.WriteLine("------------------------");
+
+            //create a new connection
+            JayaEntities db = new JayaEntities();
+
+            //get the high score list
+            //List<HighScore> highScoreList = db.HighScores.Where(x => x.Game == "Dragon").OrderBy(x => x.Score).Take(10).ToList();
+
+            foreach (var item in db.HighScores.Where(x => x.Game == "Dragon").OrderBy(x => x.Score).Take(10))
+            {
+                //Console.WriteLine("{0}, {1} - {2}", highScoreList.IndexOf(item) + 1, item.Name, item.Score);
+                Console.WriteLine(item.Name +" " +item.Score );
+            }
         }
     }
 }

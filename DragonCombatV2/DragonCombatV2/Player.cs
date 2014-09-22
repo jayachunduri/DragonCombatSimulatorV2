@@ -26,6 +26,7 @@ namespace DragonCombatV2
                 return (health > 0);
             }
         }
+        public int Score { get; set; }
 
         //constructor
         public GamePlayer()
@@ -50,18 +51,21 @@ namespace DragonCombatV2
         {
             this.name = "User";
             this.health = 100;
+            this.Score = 0;
         }
 
         public Player(string name)
         {
             this.name = name;
             this.health = 100;
+            this.Score = 0;
         }
 
         public Player(string name, int health)
         {
             this.name = name;
             this.health = health;
+            this.Score = 0;
         }
 
         //Takes current enemy health and returns enemy health after the attach.
@@ -77,17 +81,21 @@ namespace DragonCombatV2
                     if (hit <= 70) //user got a hit
                     {
                         Console.WriteLine("Congrats you got a hit!");
-                        return rng.Next(20, 26);
+                        this.Score += rng.Next(20, 26);
+                        return Score;
                     }
                     else //user missed it
                     {
                         Console.WriteLine("\n OOPS...You have missed");
                         return 0;
                     }
-                    
-                    
+
+
                 case AttackType.FireBall: //user selected the fire ball
-                    return rng.Next(10, 16);
+                    {
+                        this.Score += rng.Next(10, 16);
+                        return Score;
+                    }
                                         
                 case AttackType.Heal: //user selected heal
                     if (health >= maxHP) //won't heal if user has his max HP

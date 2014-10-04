@@ -63,6 +63,7 @@ Welcome to the game: DRAGON HIT!
             //Displays current health of player and enemy
         public void DisplayCombatInfo()
         {
+            //Console.Clear();
             Console.WriteLine(user.name + " health: " + user.health + "\n" + dragon.name + " health: " + dragon.health);
         }
 
@@ -71,18 +72,23 @@ Welcome to the game: DRAGON HIT!
         {
             while (user.IsAlive && dragon.IsAlive) //means both are alive to play
             {
+                
                 DisplayCombatInfo();
                 Console.ReadKey(); //user can view the information
                 this.dragon.TakeDamage(user.DoAttach());
-                
+
                 if (dragon.IsAlive) //if dragon survives user's attack, then only it can attack
                 {
+
                     DisplayCombatInfo();
                     Console.ReadKey();
                     user.TakeDamage(this.dragon.DoAttach());
                 }
                 else
-                    Console.WriteLine("\n" +user.name + " you WON!");
+                {
+                    Console.WriteLine("\n" + user.name + " you WON!");
+                    return;
+                }
             }
 
            Console.WriteLine("\n" +user.name + " you lost");

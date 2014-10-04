@@ -80,12 +80,14 @@ namespace DragonCombatV2
                     int hit = rng.Next(1, 101);
                     if (hit <= 70) //user got a hit
                     {
+                        Console.Clear();
                         Console.WriteLine("Congrats you got a hit!");
                         this.Score += rng.Next(20, 26);
                         return Score;
                     }
                     else //user missed it
                     {
+                        Console.Clear();
                         Console.WriteLine("\n OOPS...You have missed");
                         return 0;
                     }
@@ -100,6 +102,7 @@ namespace DragonCombatV2
                 case AttackType.Heal: //user selected heal
                     if (health >= maxHP) //won't heal if user has his max HP
                     {
+                        Console.Clear();
                         Console.WriteLine("Sorry, you already have max HP points. Make a new choice");
                         return DoAttach();
                     }
@@ -109,6 +112,7 @@ namespace DragonCombatV2
                         int healthHealed = rng.Next(10, 21);
                         if(healthHealed > healthUntilMaxHP)
                         {
+                            Console.Clear();
                             Console.WriteLine("Sorry, you can't heal past your Max HP\nMake a new choice");
                             return DoAttach();
                         }
@@ -117,6 +121,7 @@ namespace DragonCombatV2
                     }
                     
                 default:
+                    Console.Clear();
                     Console.WriteLine("You have entered wrong choice. Make a new choice");
                     return DoAttach();
                     

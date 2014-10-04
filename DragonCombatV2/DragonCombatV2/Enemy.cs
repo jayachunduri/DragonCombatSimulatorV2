@@ -36,11 +36,13 @@ namespace DragonCombatV2
             int random = rng.Next(1, 101);
             if (random <= 80) //means dragon got hit
             {
+                Console.Clear();
                 Console.WriteLine("\nDragon got the hit");
                 return rng.Next(5, 16);
             }
             else //means dragon missed
             {
+                Console.Clear();
                 Console.WriteLine("\nDragon missed!!!!");
             }
             return 0;
